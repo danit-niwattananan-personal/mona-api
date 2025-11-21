@@ -49,7 +49,7 @@ app.get("/api/v1/teamsize", (req, res) => {
 app.get("/api/v1/images", (req, res) => {
  try {
    const imagesDir = path.join(__dirname, "../images");
-   const images: { [key: string]: string } = {};
+   const images: Array<{ name: string; data: string }> = [];
    
    const imageFiles = [
      { name: "Andriani", file: "andriani.png" },
@@ -63,8 +63,7 @@ app.get("/api/v1/images", (req, res) => {
      if (fs.existsSync(filePath)) {
        const imageBuffer = fs.readFileSync(filePath);
        const base64Image = imageBuffer.toString("base64");
-       const extension = path.extname(file).substring(1);
-       images[name] = `data:image/${extension};base64,${base64Image}`;
+       images.push({ name, data: base64Image });
      }
    });
    
